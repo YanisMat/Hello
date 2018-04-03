@@ -1,0 +1,73 @@
+a {
+display: inline-block;
+height: 120px;
+width: 120px;
+margin: 50px;
+border-radius: 190px;
+}
+
+i {
+line-height: 115px;
+font-size: 45px;
+font-weight: bold;
+font-style: normal;
+transition: all .1s;
+}
+
+.btn_info {
+position: absolute;
+top: 65%;
+left: 32%;
+}
+
+.effect2 {
+border: 3px solid #62ad74;
+background: #7fde95;
+text-align: center;
+text-decoration: none;
+color: #62ad74;
+transition: all .2s;
+margin: 40px;
+}
+
+.effect3 {
+border: 3px solid #d4d66f;
+background: #fafc92;
+text-align: center;
+text-decoration: none;
+color: #d4d66f;
+transition: all .2s;
+margin: 40px;
+
+}
+
+.effect4 {
+border: 3px solid #bf7965;
+background: #f79c82;
+text-align: center;
+text-decoration: none;
+color: #bf7965;
+transition: all .2s;
+margin: 40px;
+}
+
+.effect2:hover {
+box-shadow: 0px 0 0 0 #62ad74,  0px 0 0 10px #62ad74;
+}
+.effect2:active {
+box-shadow: 0px 0 0 11px #7fde95, 0px 0 0 10px #7fde95;
+}
+
+.effect3:hover {
+box-shadow: 0px 0 0 0 #fafc92,  0px 0 0 10px #fafc92;
+}
+.effect3:active {
+box-shadow: 0px 0 0 11px #d4d66f, 0px 0 0 10px #d4d66f;
+}
+
+.effect4:hover {
+box-shadow: 0px 0 0 0 #bf7965,  0px 0 0 10px #bf7965;
+}
+.effect4:active {
+box-shadow: 0px 0 0 11px #f79c82, 0px 0 0 10px #f79c82;
+}

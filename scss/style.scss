@@ -1,0 +1,95 @@
+.component-area-graph {
+  $borderColor: #fff;
+  $highlightPointColor: #fff;
+  $highlightPointStrokeColor: #0071e0;
+  
+  max-width: 700px;
+
+  /** Required for responsiveness **/
+  .svg-container {
+    position: relative;
+  }
+  /** Required for responsiveness **/
+  .svg-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+  /** Required for responsiveness **/
+  .ratio-3-2 {
+    /* Ratio: 3:2 */
+    padding-bottom: calc(100% * 2 / 3);
+  }
+
+  .border {
+    fill: transparent;
+    pointer-events: none;
+    stroke: $borderColor;
+    stroke-width: 1.5px;
+  }
+
+  .area:hover {
+    opacity: 0.75;
+  }
+  /** Layer styles **/
+  /* Default area style */
+  .area {
+    fill: #f79c82;
+  }
+
+  .area--blue-dark-dotted {
+    fill: url("#svg-blue-dark-dotted");
+  }
+
+  .area--blue-light-dotted {
+    fill: url("#svg-blue-light-dotted");
+  }
+
+  .area--blue-light {
+    fill: #78e9d8;
+  }
+
+  .area--green-dark {
+    fill: #7fde95;
+  }
+
+  .area--green-light {
+    fill: #bee594;
+  }
+
+  .area--yellow {
+    fill: #ffe28f;
+  }
+
+  .area--orange {
+    fill: #f79c82;
+  }
+
+  .divider {
+    pointer-events: none;
+
+    line {
+      stroke: #f4f4f4;
+      stroke-width: 1px;
+    }
+  }
+
+  .divider--first,
+  .divider--last {
+    display: none;
+  }
+
+  .highlight {
+    pointer-events: none;
+  }
+
+  .highlight__circle {
+    fill: $highlightPointColor;
+    stroke: $highlightPointStrokeColor;
+    stroke-width: 2;
+  }
+
+  .highlight__path {
+    stroke-width: 6px;
+  }
+}

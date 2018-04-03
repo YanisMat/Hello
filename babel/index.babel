@@ -1,0 +1,676 @@
+/**
+ * Generic Area Graph module.
+ *
+ *** Exemplary usage:
+
+var config = {
+  container: document.getElementById('area-graph'),
+  data: {
+    // Make sure the classNames and area arrays have the same length!
+    // The order of classNames matches with the order of areas.
+    areaMeta: ['', { classNames: 'area--blue-light' }, { classNames: 'area--green-dark' }, { classNames: 'area--blue-light-dotted' }, { classNames: 'area--green-light' }, { classNames: 'area--blue-dark-dotted' }],
+    areas
+  }
+};
+
+var myAreaGraph = new AreaGraph(config);
+
+ *** Public methods:
+
+areaGraph.update({
+  areas: areas2,
+  areaMeta: [{ classNames: 'area--blue-light' }, '', { classNames: 'area--green-dark' }]
+});
+
+ *** Conventions:
+
+ - "px": Format: {x: <xValue>, y: <yValue>}. Position in the chart element. Uses absolute pixel values (e.g. 1080 in a 1200px-wide element).
+ - "point": Format: {x: <xValue>, y: <yValue>}. Coordinates within chart. Relative values depending on the chart range (e.g. 14.3 in a range of 20).
+ - "render...()". Indicates that a part of the graph is to be drawn.
+
+ */
+
+/**
+ * Generic functions used by Area Graph.
+ */
+
+/**
+ * Returns the maximum value in the given area
+ */
+const stackMax = function (area) {
+  return d3.max(area, function (d) {
+    return d[1];
+  });
+}
+
+/**
+ * Returns the minimum value in the given area
+ */
+const stackMin = function (area) {
+  return d3.min(area, function (d) {
+    return d[0];
+  });
+}
+
+/**
+ * Get closest x value in dataset left of/small than reference point
+ *
+ * @param {array} data
+ * @param {integer} referencePointX
+ *
+ * @returns {object} {x: <xValue>, y: <yValue>}
+ */
+const findClosestPointLeft = function (data, referencePointX) {
+  return data.reduce(function (accumulator, currentValue, currentIndex) {
+    // NOTE The current algorithm only works if the "currentValue.coords.x" values are sorted in an ascending order, e.g. 0, 1, 2, ...
+    const closestXValue = currentValue.coords.x;
+
+    // Read: If currentValue is smaller than (left of) cursor but higher than the last value, then ...
+    return (closestXValue < referencePointX && closestXValue >= accumulator.coords.x) ? currentValue : accumulator;
+  });
+}
+
+/**
+ * Get closest x value in dataset right of/bigger than reference point
+ *
+ * @param {array} data
+ * @param {integer} referencePointX
+ *
+ * @returns {object} {x: <xValue>, y: <yValue>}
+ */
+const findClosestPointRight = function (data, referencePointX) {
+  return data.reduceRight(function (accumulator, currentValue, currentIndex) {
+    // NOTE The current algorithm only works if the "currentValue.coords.x" values are sorted in a descending order, e.g. 9, 8, 7, ...
+    const closestXValue = currentValue.coords.x;
+
+    // Read: If currentValue is bigger than (right of) cursor OR EQUAL but smaller than the last value, then ...
+    return (closestXValue >= referencePointX && closestXValue <= accumulator.coords.x) ? currentValue : accumulator;
+  });
+}
+
+/**
+ * Determine point where curve intersects with vertical line
+ *
+ * @param {integer} left Left/minimum position in curve
+ * @param {integer} right Right/maximum position in curve
+ * @param {object} xValue X-value of vertical line that intersects with curve
+ * @param {function} pointFunc Function called to determine point on curve at certain length of the curve
+ *
+ * @returns {object} {x: <xValue>, y: <yValue>}
+ */
+const findClosestPointVertically = function findClosestPointVerticallyR(left, right, xValue, pointFunc) {
+  // The higher the precision, the more computing power is needed, and the closer the point will match with the visible intersection
+  const precision = 0.5;
+
+  // Critical part of algorithm to reduce needed steps to find y-value
+  const split = (left + right) / 2;
+
+  // Point on curve (approximate value)
+  const curvePoint = pointFunc(split);
+
+  // Distance between curve's approximate point.x and xValue
+  const distance = Math.abs(right - left);
+
+  // If the two x-values are close enough, we use the determined point on the curve
+  if (distance <= precision) {
+    return curvePoint;
+  }
+
+  if (curvePoint.x <= xValue) {
+    return findClosestPointVerticallyR.call(this, split, right, xValue, pointFunc);
+  } else {
+    return findClosestPointVerticallyR.call(this, left, split, xValue, pointFunc);
+  }
+}
+
+
+const defaults = {
+  attributeNames: {
+    areaBorderId: 'data-area-id'
+  },
+  classNames: {
+    svg: 'svg-content',
+    area: 'area',
+    areaBorder: 'border',
+    highlight: {
+      circle: 'highlight highlight__circle',
+      path: 'highlight highlight__path border border--highlight'
+    }
+  },
+  ids: {
+    mask: {
+      highlightPath: 'maskHighlightPath'
+    }
+  },
+  /**
+   * Documentation: https://github.com/d3/d3-shape/blob/master/README.md#curves
+   * Tool for curve comparison: https://cemrajc.github.io/d3-curve-comparison/
+   * Alternatives:
+   * - d3.curveCatmullRom.alpha(0.5)
+   * - d3.curveLinear
+   */
+  areaCurve: d3.curveBasis
+};
+
+class AreaGraph {
+  constructor(config) {
+    this.config = {
+      ...defaults,
+      ...config
+    };
+    this.data = config.data;
+
+    this.init();
+
+    return {
+      update: this.update.bind(this)
+    };
+  }
+
+  updateChartSize() {
+    this.chart
+      .attr('height', this.config.container.clientHeight)
+      .attr('width', this.config.container.clientWidth);
+  }
+
+  handleResize() {
+    window.requestAnimationFrame(() => {
+      this.clear();
+      this.render();
+    });
+  }
+
+  clear() {
+    d3.selectAll(this.config.container.childNodes).remove();
+  }
+
+  init() {
+    this.stack = this.updateStack();
+    this.render();
+    window.addEventListener('resize', this.handleResize.bind(this));
+  }
+
+  updateStack() {
+    const stack = d3.stack()
+      .keys(d3.range(this.areaCount()))
+      // Applies a zero baseline (https://github.com/d3/d3-shape/blob/master/README.md#stackOffsetNone)
+      .offset(d3.stackOffsetNone);
+
+    const transposedStack = stack(d3.transpose(this.data.areas));
+
+    const fullStack = transposedStack.map((arrays, areaIndex) => {
+      // TODO Set initial chart width instead of calling "clientWidth" twice (once here, once in updateChartSize)
+      const chartWidth = this.config.container.clientWidth;
+
+      return arrays.map((currentValue, index, array) => {
+        // Calculate x coordinate assuming the values are spread evently along the x-axis
+        const xPosition = index === 0 ? 0 : (chartWidth / this.xAxisSectionCount()) * index;
+
+        /**
+         * Coordinates are relative to the coordinate system and independent from the chart's pixel size and areas.
+         */
+        currentValue.coords = {
+          x: this.xScale().invert(xPosition),
+          y: currentValue[1]
+        };
+
+        // Here we add meta data to each area.
+        // This data can be accessed from every area!
+        // This is useful to provide area-specific tooltip texts, for example.
+        currentValue.meta = this.data.areaMeta[areaIndex];
+        return currentValue;
+      })
+    });
+
+    return fullStack;
+  }
+
+  areaCount() {
+    return this.data.areas.length;
+  }
+
+  xAxisSectionCount() {
+    return this.data.areas[0].length - 1;
+  }
+
+  /**
+   * Constructs scale along x-axis
+   */
+  xScale() {
+    const width = this.config.container.clientWidth;
+
+    return d3.scaleLinear()
+      // Check for amount of entries in first areas
+      // If other areas have more entries, they'll be cut off.
+      // So make sure that all areas have the same amount of entries!
+      .domain([0, this.xAxisSectionCount()])
+      .range([0, width]);
+  }
+
+  /**
+   * Constructs scale along y-axis
+   */
+  yScale() {
+    const height = this.config.container.clientHeight;
+
+    return d3.scaleLinear()
+      .domain([d3.min(this.stack, stackMin), d3.max(this.stack, stackMax)])
+      .range([height, 0]);
+  }
+
+  unhighlightSection() {
+    const draw = () => {
+      this.removeLayer('highlights');
+    }
+
+    window.requestAnimationFrame(draw.bind(this));
+  }
+
+  /**
+   * Get position of x/y in coordinate system.
+   * This method expects pixel values and returns values relative to the coordinate system.
+   *
+   * @param {object} coords {x, y}
+   *
+   * @returns {object} {x, y}
+   */
+  convertPxToPoint(coords) {
+    return {
+      x: this.xScale().invert(coords.x),
+      y: this.yScale().invert(coords.y)
+    };
+  }
+
+  pointOnCurveInPx(curve, length) {
+    return curve.getPointAtLength(length);
+  }
+
+  /**
+   * Get pixel position of x/y within chart element.
+   * This method expects coordinate values and returns absolute values within the currently displayed element.
+   *
+   * @param {object} coords {x, y}
+   *
+   * @returns {object} {x, y}
+   */
+  convertPointToPx(coords) {
+    return {
+      x: this.xScale()(coords.x),
+      y: this.yScale()(coords.y)
+    };
+  }
+
+  /**
+   * Calculate point on curve that's as close to a certain point as possible
+   */
+  calculateClosestPoint(curve, idealPoint) {
+    const pointOnCurve = (length) => {
+      return this.convertPxToPoint(this.pointOnCurveInPx(curve, length));
+    }
+
+    const curveStart = 0;
+    const curveEnd = curve.getTotalLength();
+
+    return findClosestPointVertically.call(this, curveStart, curveEnd, idealPoint.x, pointOnCurve);
+  }
+
+  /**
+   * Highlight point at certain position
+   *
+   * @param {object} position {x, y}
+   * @param {object} layer D3 element
+   */
+  renderHighlightCircle(layer, position) {
+    layer
+      .append('circle')
+      .classed(this.config.classNames.highlight.circle, true)
+      .attr('cx', () => {
+        return position.x;
+      })
+      .attr('cy', () => {
+        return position.y;
+      })
+      .attr('r', 6);
+  };
+
+  renderMask(config) {
+    const selectMask = d3.select(`#${this.config.ids.mask.highlightPath}`);
+    let maskContainer;
+
+    if (selectMask.empty()) {
+      maskContainer = this.addLayer('masks')
+        .append('svg')
+        .attr('height', '100%')
+        .attr('width', '100%')
+        .append('defs')
+        .append('mask')
+        .attr('id', this.config.ids.mask.highlightPath)
+    } else {
+      selectMask.select('rect').remove();
+      maskContainer = selectMask;
+    }
+
+    maskContainer
+      .append('rect')
+      .attr('x', config.boundary.left)
+      .attr('y', 0)
+      .attr('height', '100%')
+      .attr('width', config.boundary.right - config.boundary.left)
+      .attr('fill', 'transparent');
+  }
+
+  renderHighlightPath(layer, index, maskConfig) {
+    this.renderMask(maskConfig);
+
+    const border = this.curveAreaBorder();
+
+    const path = layer
+      .selectAll('g.child')
+      .data([this.stack[index]])
+      .enter()
+      .append('path')
+      .classed(this.config.classNames.highlight.path, true)
+      // Make sure the mask element exists on the page!
+      .attr('mask', `url("#${this.config.ids.mask.highlightPath}")`)
+      .attr('d', border);
+  }
+
+  highlightSection(d, i) {
+    const cursor = {
+      x: d3.mouse(this.config.container)[0], // Pixel position
+      y: d3.mouse(this.config.container)[1]
+    };
+
+    const cursorCoords = this.convertPxToPoint({
+      x: cursor.x,
+      y: cursor.y
+    });
+
+    const border = this.getBorderOfArea(i);
+
+    const idealPointLeft = findClosestPointLeft(d, cursorCoords.x).coords;
+    const closestPointLeft = this.calculateClosestPoint(border, idealPointLeft);
+
+    const idealPointRight = findClosestPointRight(d, cursorCoords.x).coords;
+    const closestPointRight = this.calculateClosestPoint(border, idealPointRight);
+
+    const maskConfig = {
+      boundary: {
+        left: this.convertPointToPx(idealPointLeft).x,
+        right: this.convertPointToPx(idealPointRight).x
+      }
+    };
+
+    // TODO Only redraw if position of highlight circles/highlighted curve changed (for performance reasons)
+    window.requestAnimationFrame(() => {
+      // NOTE Don't use `.unhighlight` here as long as `.unhighlight` also waits for `requestAnimationFrame`,
+      // otherwise the newly drawn elements will disappear on the next frame.
+      this.removeLayer('highlights');
+
+      const layer = this.addLayer('highlights');
+
+      this.renderHighlightPath(layer, i, maskConfig);
+
+      // LEFT CIRCLE
+      this.renderHighlightCircle(layer, {
+        x: this.convertPointToPx(idealPointLeft).x,
+        y: this.convertPointToPx(closestPointLeft).y
+      });
+
+      // RIGHT CIRCLE
+      this.renderHighlightCircle(layer, {
+        x: this.convertPointToPx(idealPointRight).x,
+        y: this.convertPointToPx(closestPointRight).y
+      });
+    });
+  }
+
+  handleMouseMove(d, i) {
+    this.highlightSection(d, i);
+  }
+
+  handleMouseOver(d, i) {
+    this.highlightSection(d, i);
+  }
+
+  handleMouseOut(d, i) {
+    this.unhighlightSection();
+  }
+
+  /**
+   * Group elements in layers to avoid unexpected overlaps from different elements
+   * and to make it easier to remove elements associated with a certain layer.
+   *
+   * @param {string} name Name of layer
+   *
+   * @returns {object} Layer element
+   */
+  addLayer(name) {
+    return this.chart
+      .append('g')
+      .classed(`layer layer__${name}`, true);
+  }
+
+  removeLayer(name) {
+    this.chart
+      .selectAll(`.layer__${name}`)
+      .remove();
+  }
+
+  /**
+   * Path to be followed when drawing an area.
+   *
+   * @returns {function}
+   */
+  curveArea() {
+    return d3.area()
+      .curve(this.config.areaCurve)
+      .x((d, i) => {
+        return this.xScale()(i);
+      })
+      .y0((d) => {
+        return this.yScale()(d[0]);
+      })
+      .y1((d) => {
+        return this.yScale()(d[1]);
+      });
+  }
+
+  /**
+   * Path to be followed when drawing a line that mimics the top border of an area.
+   *
+   * @returns {function}
+   */
+  curveAreaBorder() {
+    return d3.line()
+      .x((d, i) => {
+        return this.xScale()(i);
+      })
+      .y((d) => {
+        return this.yScale()(d[1]);
+      })
+      .curve(this.config.areaCurve);
+  }
+
+  /**
+   * Render graph with multiple layers
+   */
+  render() {
+    this.chart = d3.select(this.config.container).append('svg').classed(this.config.classNames.svg, true);
+    this.updateChartSize();
+
+    // Add layer: Areas
+    this.renderAreas();
+
+    // Add layer: Borders for areas
+    this.renderAreaBorders();
+
+    // Add layer: Dividers
+    this.renderDividers();
+  }
+
+  renderAreas() {
+    const area = this.curveArea();
+
+    this.addLayer('areas')
+      // Select all children from new layer
+      .selectAll('g.child')
+      .data(this.stack)
+      .enter()
+      .append('path')
+      // Add general CSS class to every path
+      .classed(this.config.classNames.area, true)
+      .attr('d', area)
+      .on('mouseover', this.handleMouseOver.bind(this))
+      .on('mousemove', this.handleMouseMove.bind(this))
+      .on('mouseout', this.handleMouseOut.bind(this))
+      .each(this.renderArea);
+  }
+
+  renderAreaBorders() {
+    const border = this.curveAreaBorder();
+
+    this.addLayer('borders')
+      .selectAll('g.child')
+      .data(this.stack)
+      .enter()
+      .append('path')
+      .classed(this.config.classNames.areaBorder, true)
+      .attr('d', border)
+    // .each(this.renderBorder)
+  }
+
+  getBorderOfArea(index) {
+    // TODO Instead of relying on an index that that borders and areas have the same order, use identifiers added to borders and areas
+    const area = document.querySelectorAll('.layer__borders path')[index]; // + 1
+
+    return area;
+  }
+
+  renderDividers() {
+    this.addLayer('dividers')
+      .selectAll('g.child')
+      .data(this.data.areas[0])
+      .enter()
+      .append('g')
+      .each(this.renderDivider.bind(this));
+  }
+
+  renderDivider(dataset, index, dividers) {
+    let divider = d3.select(dividers[index]);
+    let dividerCount = this.xAxisSectionCount();
+    let width = this.xScale().range()[1];
+
+    divider.classed('divider', true)
+      .attr('transform', 'translate(' + width / dividerCount * index + ' 0)');
+
+    if (index === 0) {
+      divider.classed('divider--first', true);
+    } else if (index === dividerCount) {
+      divider.classed('divider--last', true);
+    }
+
+    divider
+      .append('line')
+      .attr('y1', this.yScale().range()[0])
+      .attr('y2', this.yScale().range()[1])
+      .attr('stroke', '#f1f1f1')
+      .attr('stroke-width', '1');
+  }
+
+  renderArea(d, i) {
+    const classNames = (d[i] && d[i].meta && d[i].meta.classNames) || '';
+
+    d3.select(this)
+      .classed(classNames, true);
+  }
+
+  /**
+   * Update graph with new data.
+   * Supports partial updates:
+   * If only new area values with no area classNames are provided (`{ areas: areas }`),
+   * the values will be updated but the class names stay the same.
+   * You can also update classNames without updating the area values (`{ classNames: classNames }`).
+   *
+   * @public
+   */
+  update(data) {
+    this.data = {
+      ...this.data,
+      ...data
+    };
+
+    window.requestAnimationFrame(() => {
+      this.clear();
+      this.stack = this.updateStack();
+      this.render();
+    });
+  }
+}
+
+
+
+
+
+
+////////////////////
+// Move code BEFORE this line into a JS module and export it (`export default class AreaGraph`). Then import the AreaGraph component into the JS file where you include the BELOW code (`import AreaGraph from './modules/area-graph';`).
+////////////////////
+
+
+
+
+
+class Component {
+  constructor(element) {
+    this.element = element;
+
+    this.init();
+  }
+
+  init() {
+    // Every array represents a series of values along the x-axis
+    var areas = [
+      [0, 1.8061970119882962, 4.4546942419795623, 19.3914561984010384, 11.9553853048043845, 12.0257013425504596, 16.9393644042668157, 16.4790542331178078, 7.6586470760507369, 1.917017569236364],
+      [4, 4.8061970119882962, 14.4546942419795623, 19.3914561984010384, 11.9553853048043845, 12.0257013425504596, 16.9393644042668157, 16.4790542331178078, 4.6586470760507369, 13.917017569236364],
+      [0, 9.8061970119882962, 14.4546942419795623, 19.3914561984010384, 11.9553853048043845, 7.0257013425504596, 16.9393644042668157, 3.4790542331178078, 11.6586470760507369, 13.917017569236364],
+      [3, 2.8062970229882962, 4.4546942429795623, 29.3924562984020384, 22.9553853048043845, 22.0257023425504596, 26.9393644042668257, 26.4790542332178078, 3.6586470760507369, 1.917017569236364],
+      [0, 4.8061970119882962, 1.4546942419795623, 9.3914561984010384, 19.9553853048043845, 12.0257013425504596, 16.9393644042668157, 16.4790542331178078, 13.6586470760507369, 13.917017569236364],
+      [20, 1, 2, 4, 10, 9, 13, 15, 7, 9]
+    ];
+
+    var config = {
+      container: this.element,
+      data: {
+        areaMeta: ['', { classNames: 'area--blue-light' }, { classNames: 'area--green-dark' }, { classNames: 'area--blue-light-dotted' }, { classNames: 'area--green-light' }, { classNames: 'area--blue-dark-dotted' }],
+        areas
+      }
+    };
+
+    var areaGraph = new AreaGraph(config);
+
+    // /**
+    //  * For demonstration purposes only:
+    //  *  `update()` can be used to update graph with new data.
+    //  */
+    //
+    // var areas2 = [
+    //   [0, 1.8061970119882962, 4.4546942419795623, 19.3914561984010384, 11.9553853048043845, 12.0257013425504596, 16.9393644042668157, 16.4790542331178078, 1.6586470760507369, 1.917017569236364],
+    //   [0, 4.8061970119882962, 1.4546942419795623, 9.3914561984010384, 19.9553853048043845, 12.0257013425504596, 16.9393644042668157, 16.4790542331178078, 1.6586470760507369, 13.917017569236364],
+    //   [20, 9.8061970119882962, 14.4546942419795623, 19.3914561984010384, 11.9553853048043845, 7.0257013425504596, 16.9393644042668157, 3.4790542331178078, 11.6586470760507369, 13.917017569236364]
+    // ];
+    //
+    // setInterval(function () {
+    //
+    //   areaGraph.update({
+    //     areas: areas2,
+    //     areaMeta: [{ classNames: 'area--blue-light' }, '', { classNames: 'area--green-dark' }]
+    //   });
+    // }, 2000);
+  }
+}
+
+var areaGraph = document.getElementById('area-graph');
+if (areaGraph) {
+  new Component(areaGraph);
+}
