@@ -21,34 +21,30 @@ left: 32%;
 }
 
 .effect2 {
-border: 3px solid #62ad74;
+/* border: 3px solid #62ad74; */
 background: #7fde95;
 text-align: center;
 text-decoration: none;
 color: #62ad74;
 transition: all .2s;
-margin: 40px;
 }
 
 .effect3 {
-border: 3px solid #d4d66f;
+/* border: 3px solid #d4d66f; */
 background: #fafc92;
 text-align: center;
 text-decoration: none;
 color: #d4d66f;
 transition: all .2s;
-margin: 40px;
-
 }
 
 .effect4 {
-border: 3px solid #bf7965;
+/* border: 3px solid #bf7965; */
 background: #f79c82;
 text-align: center;
 text-decoration: none;
 color: #bf7965;
 transition: all .2s;
-margin: 40px;
 }
 
 .effect2:hover {

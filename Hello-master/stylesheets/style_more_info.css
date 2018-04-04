@@ -3,38 +3,35 @@
 }
 
 html, body, h1, h2, h3, p {
-  /* font-family: 'Lora', serif; */
-  font-family: 'IBM Plex Mono', monospace;
+  font-family: 'Lora', serif;
+  /* font-family: 'IBM Plex Mono', monospace; */
   font: inherit;
 
 }
 
 h1 {
-  font-size: 25px;
-  font-family: 'IBM Plex Mono', monospace;
+  font-size: 30px;
+  font-weight: bold;
 }
 
 h2 {
   font-size: 13px;
-  font-family: 'IBM Plex Mono', monospace;
 }
 
 h3 {
   font-size: 45px;
-  font-family: 'IBM Plex Mono', monospace;
 }
 
 p {
-  font-size: 13px;
-  font-family: 'IBM Plex Mono', monospace;
+  font-size: 20px;
 }
 
 i {
   font-size: 45px;
-  font-family: 'IBM Plex Mono', monospace;
 }
 
 .fancy-btn {
+  font-family: 'Lora', serif;
   -webkit-appearance: none;
   cursor: pointer;
   outline: none;

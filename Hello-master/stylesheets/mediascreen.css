@@ -1,0 +1,262 @@
+@media screen and (max-width: 1024px) {
+.component-area-graph{
+  max-width: 800px;
+}
+
+.svg-content{
+  max-width: 800px;
+}
+
+.component-area-graph .svg-content {
+  left: 15%;
+}
+
+
+
+.total_figure{
+  z-index: 1001;
+  margin-left: 37%;
+  margin-top: -21%;
+}
+
+.text_right {
+  max-width: 35%;
+  margin-top: -7%;
+  margin-left: 53%;
+}
+
+.line {
+  top: 80%;
+}
+
+.btn_info {
+  left: 18%;
+  top: 80%;
+}
+}
+
+
+@media screen and (max-width: 1700px) {
+  .component-area-graph{
+    max-width: 600px;
+  }
+
+  .svg-content{
+    max-width: 600px;
+  }
+
+  .component-area-graph .svg-content {
+    left: 32%;
+  }
+
+
+
+  .total_figure{
+    z-index: 1001;
+    margin-left: 45%;
+    margin-top: -21%;
+  }
+
+  .text_right {
+    max-width: 35%;
+    margin-top: -7%;
+    margin-left: 53%;
+  }
+
+  .line {
+    top: 60%;
+  }
+
+  .btn_info {
+    left: 30%;
+    top: 60%;
+  }
+}
+
+@media screen and (max-width: 1600px) {
+  .component-area-graph{
+    max-width: 600px;
+  }
+
+  .svg-content{
+    max-width: 600px;
+  }
+
+  .component-area-graph .svg-content {
+    left: 32%;
+  }
+
+
+
+  .total_figure{
+    z-index: 1001;
+    margin-left: 49%;
+    margin-top: -23%;
+  }
+
+  .text_right {
+    max-width: 39%;
+    margin-top: -7%;
+    margin-left: 57%;
+  }
+
+  .line {
+    top: 60%;
+  }
+
+  .btn_info {
+    left: 30%;
+    top: 60%;
+  }
+}
+
+@media screen and (max-width: 1350px) {
+  .component-area-graph{
+    max-width: 600px;
+  }
+
+  .svg-content{
+    max-width: 600px;
+  }
+
+  .component-area-graph .svg-content {
+    left: 17%;
+  }
+
+
+
+  .total_figure{
+    z-index: 1001;
+    margin-left: 48%;
+    margin-top: -25%;
+  }
+
+  .text_right {
+    max-width: 40%;
+    margin-top: -11%;
+    margin-left: 57%;
+  }
+
+  .line {
+    top: 60%;
+  }
+
+  .btn_info {
+    left: 26%;
+    top: 60%;
+  }
+}
+
+
+@media screen and (max-width: 1405px) {
+  .component-area-graph{
+    max-width: 600px;
+  }
+
+  .svg-content{
+    max-width: 600px;
+  }
+
+  .component-area-graph .svg-content {
+    left: 17%;
+  }
+
+
+
+  .total_figure{
+    z-index: 1001;
+    margin-left: 47%;
+    margin-top: -24%;
+  }
+
+  .text_right {
+    max-width: 42%;
+    margin-top: -8%;
+    margin-left: 54%;
+  }
+
+  .line {
+    top: 60%;
+  }
+
+  .btn_info {
+    left: 26%;
+    top: 60%;
+  }
+}
+
+@media screen and (max-width: 1210px) {
+  .component-area-graph{
+    max-width: 800px;
+  }
+
+  .svg-content{
+    max-width: 800px;
+  }
+
+  .component-area-graph .svg-content {
+    left: 20%;
+  }
+
+
+
+  .total_figure{
+    z-index: 1001;
+    margin-left: 76%;
+    margin-top: -37%;
+  }
+
+  .text_right {
+    max-width: 55%;
+    margin-top: 43%;
+    margin-left: 22%;
+  }
+
+  .line {
+    top: 125%;
+  }
+
+  .btn_info {
+    left: 19%;
+    top: 124%;
+  }
+}
+
+
+
+@media screen and (mix-width: 1190px) {
+  .component-area-graph{
+    max-width: 800px;
+  }
+
+  .svg-content{
+    max-width: 800px;
+  }
+
+  .component-area-graph .svg-content {
+    left: 20%;
+  }
+
+
+
+  .total_figure{
+    z-index: 1001;
+    margin-left: 84%;
+    margin-top: -40%;
+  }
+
+  .text_right {
+    max-width: 55%;
+    margin-top: 48%;
+    margin-left: 22%;
+  }
+
+  .line {
+    top: 125%;
+  }
+
+  .btn_info {
+    left: 19%;
+    top: 124%;
+  }
+}
