@@ -2,12 +2,36 @@
   box-sizing: border-box;
 }
 
-html, body {
-  width: 100%;
-  height: 100%;
-  font-family: 'Noto Sans', sans-serif;
-  font-weight: 400;
-  font-size: 16px;
+html, body, h1, h2, h3, p {
+  /* font-family: 'Lora', serif; */
+  font-family: 'IBM Plex Mono', monospace;
+  font: inherit;
+
+}
+
+h1 {
+  font-size: 25px;
+  font-family: 'IBM Plex Mono', monospace;
+}
+
+h2 {
+  font-size: 13px;
+  font-family: 'IBM Plex Mono', monospace;
+}
+
+h3 {
+  font-size: 45px;
+  font-family: 'IBM Plex Mono', monospace;
+}
+
+p {
+  font-size: 13px;
+  font-family: 'IBM Plex Mono', monospace;
+}
+
+i {
+  font-size: 45px;
+  font-family: 'IBM Plex Mono', monospace;
 }
 
 .fancy-btn {
@@ -15,7 +39,7 @@ html, body {
   cursor: pointer;
   outline: none;
   border: none;
-  position: relative;
+  /* position: relative; */
   top: 49%;
   left: 9%;
   display: block;
@@ -25,7 +49,7 @@ html, body {
   text-transform: uppercase;
   margin: 0 auto;
   padding: 0 10px;
-  background-color: white;
+  background-color: #fafc92;
   color: black;
   border-radius: 3px;
   -moz-transform: translateY(-50%);
@@ -57,7 +81,7 @@ html, body {
   right: 0;
   bottom: 0;
   margin: auto;
-  z-index: 50;
+  z-index: 1000;
   /*     display: table; */
   display: -webkit-flex;
   display: flex;

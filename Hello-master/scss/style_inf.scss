@@ -1,32 +1,32 @@
 @import "compass/css3";
 
-* { box-sizing: border-box; }
-html, body {
-  width: 100%; height: 100%;
-  position: relative;
-  margin: 0; padding: 0;
-  font-family: 'Noto Sans', sans-serif;
-  font-weight: 400;
-  font-size: 16px; line-height: 22px;
-  background-color: #F2E1AC;
-}
+// * { box-sizing: border-box; }
+// html, body {
+//   width: 100%; height: 100%;
+//   position: relative;
+//   margin: 0; padding: 0;
+//   font-family: 'Noto Sans', sans-serif;
+//   font-weight: 400;
+//   font-size: 16px; line-height: 22px;
+//   background-color: #F2E1AC;
+// }
 
-.fancy-btn {
-  -webkit-appearance: none;
-  cursor: pointer; outline: none; border: none;
-  position: relative; top: 50%;
-  display: block; min-width: 10%;
-  line-height: 55px; font-size: 14px;
-  text-transform: uppercase;
-  margin: 0 auto; padding: 0 10px;
-  background-color: #F2594B;
-  color: #FFF;
-  border-radius: 3px;
-  @include transform(translateY(-50%));
-  &:hover {
-    background-color: lighten(#F2594B, 5%);
-  }
-}
+// .fancy-btn {
+//   -webkit-appearance: none;
+//   cursor: pointer; outline: none; border: none;
+//   position: relative; top: 50%;
+//   display: block; min-width: 10%;
+//   line-height: 55px; font-size: 14px;
+//   text-transform: uppercase;
+//   margin: 0 auto; padding: 0 10px;
+//   background-color: #F2594B;
+//   color: #FFF;
+//   border-radius: 3px;
+//   @include transform(translateY(-50%));
+//   &:hover {
+//     background-color: lighten(#F2594B, 5%);
+//   }
+// }
 
 // completely redoing the modal from the ground up.
 .modal-overlay {
@@ -62,7 +62,7 @@ html, body {
     justify-content: center;
     -moz-box-pack: center;
     -ms-flex-pack: center;
-    
+
     width: 100%;
     text-align: center;
     visibility: hidden;
@@ -130,28 +130,28 @@ html, body {
             }
         }
     }
-        .modal-body {
-            margin: auto;
-            opacity: 0;
-            @include transform(translateY(0) scale(.8, .8));
-            @include transition-property(opacity, transform);
-            @include transition-duration(.25s);
-            @include transition-delay(.1s);
-            h3 {
-              font-weight: 700;
-              padding-bottom: 22px;
-              display: block;
-              color: #F2594B;
-              text-align: center;
-            }
-            p {
-              padding-bottom: 20px;
-            }
-            .ps {
-              font-size: 12px;
-              opacity: .3;
-            }
-        }
+        // .modal-body {
+        //     margin: auto;
+        //     opacity: 0;
+        //     @include transform(translateY(0) scale(.8, .8));
+        //     @include transition-property(opacity, transform);
+        //     @include transition-duration(.25s);
+        //     @include transition-delay(.1s);
+        //     h3 {
+        //       font-weight: 700;
+        //       padding-bottom: 22px;
+        //       display: block;
+        //       color: #F2594B;
+        //       text-align: center;
+        //     }
+        //     p {
+        //       padding-bottom: 20px;
+        //     }
+        //     .ps {
+        //       font-size: 12px;
+        //       opacity: .3;
+        //     }
+        // }
 
 @mixin keyframes($name) {
 	@-webkit-keyframes #{$name} {

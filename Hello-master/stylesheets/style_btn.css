@@ -6,13 +6,13 @@ margin: 50px;
 border-radius: 190px;
 }
 
-i {
+/* i {
 line-height: 115px;
 font-size: 45px;
 font-weight: bold;
 font-style: normal;
 transition: all .1s;
-}
+} */
 
 .btn_info {
 position: absolute;

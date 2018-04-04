@@ -1,0 +1,12 @@
+.text_right {
+  max-width: 30%;
+  margin-top: 0%;
+  margin-left: 50%;
+}
+
+.total_figure {
+  font-size: 40px;
+  margin-left: 43%;
+  z-index: 2000;
+  margin-top: -16%;
+}
