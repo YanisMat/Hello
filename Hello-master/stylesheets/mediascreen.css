@@ -1,9 +1,9 @@
-@media screen and (max-width: 1022px) {
-}
 
-@media screen and (min-width: 1023px) and (max-width: 1278px){
+@media screen and (min-width: 1350px) and (max-width: 1500px){
+  .component-area-graph {
+    /* max-width: 400px; */
+  }
 }
-
 
 @media screen and (min-width: 1279px) and (max-width: 1379px){
 }

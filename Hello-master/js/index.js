@@ -531,7 +531,7 @@ var AreaGraph = function () {
       this.renderAreaBorders();
 
       // Add layer: Dividers
-      this.renderDividers();
+      // this.renderDividers();
     }
   }, {
     key: 'renderAreas',
