@@ -8,19 +8,19 @@
 
 .component-area-graph .svg-content {
   position: absolute;
-  top: 25px;
-  left: -3px;
+  top: 246px;
+  left: 462px;
   z-index: 100;
-  height: 285px;
+  height: 135px;
 }
 
 .background-graph {
   background: #428762;
-  margin-top: 70px;
-  margin-left: 310px;
+  margin-top: -55px;
+  margin-left: 330px;
   z-index: 1500;
-  height: 350px;
-  width: 635px;
+  height: 295px;
+  width: 615px;
 }
 
 .component-area-graph .ratio-3-2 {
@@ -82,10 +82,10 @@
   opacity: 0.7;
   position: absolute;
   top: 433px;
-  left: 318px;
-  width: 632px;
+  left: 355px;
+  width: 530px;
   height: 1px;
-  z-index: 20;
+  z-index: 101;
 
 }
 
@@ -93,11 +93,11 @@
   background-color: white;
   opacity: 0.7;
   position: absolute;
-  top: 153px;
-  left: 404px;
-  width: 1px;
-  height: 280px;
-  z-index: 101;
+  top: 215px;
+      left: 408px;
+      width: 1px;
+      height: 220px;
+      z-index: 101;
 }
 
 h5 {
@@ -107,9 +107,9 @@ h5 {
 }
 
 .appraisal {
-  margin-left: 87px;
-  margin-top: -57px;
-  position: absolute;
+  margin-left: 43px;
+      margin-top: -57px;
+      position: absolute;
 }
 
 .line_score {
@@ -120,21 +120,20 @@ h5 {
   height: 20px;
   z-index: 20;
   display: inline-block;
-  margin: 74px;
+  margin: 70px;
 }
 
 .score_line {
   height: 97px;
-  width: 685px;
-  margin-left: 12px;
-  margin-top: -74px;
-
+      width: 685px;
+      margin-left: -17px;
+      margin-top: -69px;
 }
 
 .total_figure {
-  margin-left: 468px;
+  margin-left: 375px;
   z-index: 2000;
-  margin-top: -73px;
+  margin-top: -60px;
   color: #5CBD89;
-  width: 65px;
+  width: 79px;
 }
