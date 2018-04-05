@@ -1,57 +1,56 @@
 .component-area-graph {
-  max-width: 600px;
-  /** Required for responsiveness **/
-  /** Required for responsiveness **/
-  /** Required for responsiveness **/
-  /** Layer styles **/
-  /* Default area style */
-
+  max-width: 400px;
 }
+
 .component-area-graph .svg-container {
   position: relative;
 }
+
 .component-area-graph .svg-content {
   position: absolute;
-  top: 25%;
-  left: 45%;
+  top: 200px;
+  left: 435px;
   z-index: 1000;
+  height: 180px;
 }
+
+.background-graph {
+  background: #428762;
+  margin-top: -120px;
+  margin-left: 310px;
+  z-index: 1500;
+  height: 300px;
+  width: 635px;
+}
+
 .component-area-graph .ratio-3-2 {
   /* Ratio: 3:2 */
   padding-bottom: calc(100% * 2 / 3);
 }
+
 .component-area-graph .border {
   fill: transparent;
   pointer-events: none;
   stroke: #fff;
-  stroke-width: 1.5px;
+  stroke-width: 2px;
 }
+
 .component-area-graph .area:hover {
   opacity: 0.75;
 }
+
 .component-area-graph .area {
-  fill: #f79c82;
+  fill: #428762;
 }
 
 .component-area-graph .area--blue-light-dotted {
   fill: url("#svg-blue-light-dotted");
 }
 
-
-
-/* зеленый */
-.component-area-graph .area--green-dark {
-  fill: #7fde95;
-}
-
-/* желтый */
-.component-area-graph .area--blue-light {
-  fill: #fafc92;
-}
-
 /* красный */
 .component-area-graph .area--orange {
-  fill: #f79c82;
+  /* fill: #f79c82; */
+  fill: #428762;
 }
 
 
@@ -78,13 +77,63 @@
   stroke-width: 6px;
 }
 
-
-.line {
-  background-color: #2b2d2c;
+.line_horizontal {
+  background-color: white;
+  opacity: 0.7;
   position: absolute;
-  top: 60%;
-  left: 25%;
-  width: 50%;
-  height: 3px;
+  top: 433px;
+  left: 405px;
+  width: 485px;
+  height: 1px;
   z-index: 20;
+}
+
+.line_vertical {
+  background-color: white;
+  opacity: 0.7;
+  position: absolute;
+  top: 254px;
+  left: 405px;
+  width: 1px;
+  height: 180px;
+  z-index: 20;
+}
+
+h5 {
+  margin: 35px;
+  display: inline-block;
+  color: white;
+}
+
+.appraisal {
+  margin-left: 12px;
+  margin-top: -57px;
+  position: absolute;
+}
+
+.line_score {
+  background-color: white;
+  opacity: 0.7;
+  left: 330px;
+  width: 1px;
+  height: 20px;
+  z-index: 20;
+  display: inline-block;
+  margin: 74px;
+}
+
+.score_line {
+  height: 97px;
+  width: 685px;
+  margin-left: -66px;
+  margin-top: -74px;
+
+}
+
+.total_figure {
+  margin-left: 455px;
+  z-index: 2000;
+  margin-top: -100px;
+  color: #5CBD89;
+  width: 65px;
 }

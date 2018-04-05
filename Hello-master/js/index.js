@@ -271,7 +271,7 @@ var AreaGraph = function () {
     value: function yScale() {
       var height = this.config.container.clientHeight;
 
-      return d3.scaleLinear().domain([d3.min(this.stack, stackMin), d3.max(this.stack, stackMax)]).range([height, 0]);
+      return d3.scaleLinear().domain([d3.min(this.stack, stackMin), d3.max(this.stack, stackMax)]).range([height, 5]);
     }
   }, {
     key: 'unhighlightSection',
@@ -637,9 +637,9 @@ var Component = function () {
     value: function init() {
       // Every array represents a series of values along the x-axis
       var areas = [
-        [3, 3, 4, 7, 8, 8, 7, 4, 3, 3],
-        [2, 2, 3, 6, 7, 7, 6, 3, 2, 2],
-        [1, 1, 2, 5, 7, 7, 5, 2, 1, 1]
+        // [3, 3, 4, 7, 8, 8, 7, 4, 3, 3],
+        [1, 1, 2, 3, 3, 2, 1, 1],
+        // [1, 1, 2, 5, 7, 7, 5, 2, 1, 1]
       ];
 
       var config = {

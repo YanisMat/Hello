@@ -1,16 +1,44 @@
-.text_right {
-  max-width: 30%;
-  margin-top: -6%;
-  margin-left: 50%;
+* {
+  box-sizing: border-box;
 }
 
-.total_figure {
-  font-size: 40px;
-  margin-left: 43%;
-  z-index: 2000;
-  margin-top: -18%;
+html, body, h1, h2, h3, p, i {
+  /* font-family: 'Lora', serif; */
+  /* font-family: 'IBM Plex Mono', monospace; */
+  font-family: 'Roboto', sans-serif;
+  overflow: hidden;
+}
+
+h1 {
+  font-size: 30px;
+}
+
+h2 {
+  font-size: 13px;
+}
+
+h3 {
+  font-size: 55px;
+}
+
+h5 {
+  font-size: 13px;
+}
+
+p {
+  font-size: 18px;
+}
+
+i {
+  font-size: 45px;
+}
+
+.text_right {
+  max-width: 600px;
+  margin-top: -345px;
+  margin-left: 990px;
 }
 
 .label {
-  margin-top: -18%;
+  margin-top: -18px;
 }

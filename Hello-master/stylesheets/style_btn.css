@@ -6,44 +6,52 @@ margin: 50px;
 border-radius: 190px;
 }
 
-/* i {
-line-height: 115px;
-font-size: 45px;
-font-weight: bold;
-font-style: normal;
-transition: all .1s;
-} */
+
+
+.line {
+  background-color: #2b2d2c;
+  /* opacity: 0.9; */
+  position: absolute;
+  top: 570px;
+  left: 550px;
+  width: 800px;
+  height: 3px;
+  z-index: 20;
+}
 
 .btn_info {
 position: absolute;
-top: 65%;
-left: 32%;
+top: 570px;
+left: 620px;
 }
 
 .effect2 {
+  /* красный */
 /* border: 3px solid #62ad74; */
-background: #7fde95;
+background: #C71F0D;
 text-align: center;
 text-decoration: none;
-color: #62ad74;
+/* color: #62ad74; */
 transition: all .2s;
 }
 
 .effect3 {
+  /* желтый */
 /* border: 3px solid #d4d66f; */
-background: #fafc92;
+background: #FF9754;
 text-align: center;
 text-decoration: none;
-color: #d4d66f;
+/* color: #d4d66f; */
 transition: all .2s;
 }
 
 .effect4 {
+  /* зеленый */
 /* border: 3px solid #bf7965; */
-background: #f79c82;
+background: #428762;
 text-align: center;
 text-decoration: none;
-color: #bf7965;
+/* color: #bf7965; */
 transition: all .2s;
 }
 
