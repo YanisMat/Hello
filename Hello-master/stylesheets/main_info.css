@@ -2,15 +2,20 @@ a {
 display: inline-block;
 height: 120px;
 width: 120px;
-margin: 115px;
+margin: 142px;
 border-radius: 190px;
 }
 
 
 .btn_info {
 position: absolute;
-top: 530px;
-left: 435px;
+top: 503px;
+left: 352px;
+}
+
+.cif {
+  font-size: 45px;
+  color: white;
 }
 
 .effect2 {
@@ -65,16 +70,41 @@ box-shadow: 0px 0 0 11px #f79c82, 0px 0 0 10px #f79c82;
 }
 
 .main_info {
-  margin-left: 750px;
+  margin-left: 766px;
   margin-top: 60px;
 }
+
+
+
+
 
 .reference {
     display: none;
 }
-.reference ~ .story{
+
+.reference_left {
     display: none;
 }
+
+.reference_right {
+    display: none;
+}
+
+
+.reference ~ .story {
+    display: none;
+}
+
+.reference_left ~ .story_left {
+    display: none;
+
+}
+
+.reference_right ~ .story_right {
+    display: none;
+}
+
+
 .reference + label {
     position: absolute;
     top: 330px;
@@ -88,26 +118,107 @@ box-shadow: 0px 0 0 11px #f79c82, 0px 0 0 10px #f79c82;
     cursor: pointer;
     display: inline-block;
 }
+
+.reference_left + label {
+    position: absolute;
+    top: 330px;
+    left: 34%;
+    border: 1px solid #333;
+    border-radius: 4px;
+    background: #F0FFF0;
+    padding: 3px;
+    color: green;
+    font-size: 16px;
+    cursor: pointer;
+    display: inline-block;
+}
+
+.reference_right + label {
+    position: absolute;
+    top: 330px;
+    left: 34%;
+    border: 1px solid #333;
+    border-radius: 4px;
+    background: #F0FFF0;
+    padding: 3px;
+    color: green;
+    font-size: 16px;
+    cursor: pointer;
+    display: inline-block;
+}
+
+
 .reference:checked ~ .story {
+    display: block;
+    background: #FAFAFA;
+    padding: 41px;
+    height: 485px;
+    width: 950px;
+    margin-left: -316px;
+    border-radius: 5%;
+}
+
+.reference_left:checked ~ .story_left {
     display: block;
     background: #FAFAFA;
     padding: 41px;
     height: 485px;
     border-radius: 5%;
 }
+
+.reference_right:checked ~ .story_right {
+    display: block;
+    background: #FAFAFA;
+    padding: 41px;
+    height: 485px;
+    border-radius: 5%;
+}
+
+
 .spravca {
     position: relative;
     height: 600px;
     width: 350px;
     left: 802px;
     top: 150px;
+}
 
+.spravca_left {
+    position: relative;
+    height: 600px;
+    width: 350px;
+    left: 402px;
+    top: -470px;
+}
+
+.spravca_right {
+    position: relative;
+    height: 600px;
+    width: 350px;
+    left: 1202px;
+    top: -1093px;
 }
 
 .story {
   margin-top: 82px;
 }
 
+.story_left {
+  margin-top: 82px;
+}
+
+.story_right {
+  margin-top: 82px;
+}
+
 .name_sym {
+margin-left: 24px;
+}
+
+.name_sym_left {
+margin-left: 24px;
+}
+
+.name_sym_right {
 margin-left: 24px;
 }
