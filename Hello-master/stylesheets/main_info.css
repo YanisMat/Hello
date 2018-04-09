@@ -2,27 +2,15 @@ a {
 display: inline-block;
 height: 120px;
 width: 120px;
-margin: 50px;
+margin: 115px;
 border-radius: 190px;
 }
 
 
-
-.line {
-  background-color: #2b2d2c;
-  /* opacity: 0.9; */
-  position: absolute;
-  top: 570px;
-  left: 550px;
-  width: 800px;
-  height: 3px;
-  z-index: 20;
-}
-
 .btn_info {
 position: absolute;
-top: 570px;
-left: 620px;
+top: 530px;
+left: 435px;
 }
 
 .effect2 {
@@ -74,4 +62,52 @@ box-shadow: 0px 0 0 0 #bf7965,  0px 0 0 10px #bf7965;
 }
 .effect4:active {
 box-shadow: 0px 0 0 11px #f79c82, 0px 0 0 10px #f79c82;
+}
+
+.main_info {
+  margin-left: 750px;
+  margin-top: 60px;
+}
+
+.reference {
+    display: none;
+}
+.reference ~ .story{
+    display: none;
+}
+.reference + label {
+    position: absolute;
+    top: 330px;
+    left: 34%;
+    border: 1px solid #333;
+    border-radius: 4px;
+    background: #F0FFF0;
+    padding: 3px;
+    color: green;
+    font-size: 16px;
+    cursor: pointer;
+    display: inline-block;
+}
+.reference:checked ~ .story {
+    display: block;
+    background: #FAFAFA;
+    padding: 41px;
+    height: 485px;
+    border-radius: 5%;
+}
+.spravca {
+    position: relative;
+    height: 600px;
+    width: 350px;
+    left: 802px;
+    top: 150px;
+
+}
+
+.story {
+  margin-top: 82px;
+}
+
+.name_sym {
+margin-left: 24px;
 }
