@@ -1,0 +1,156 @@
+
+
+.reference {
+    display: none;
+}
+
+.reference ~ .story {
+    display: none;
+}
+
+.reference + label {
+    position: absolute;
+    top: 330px;
+    left: 34%;
+    border: 1px solid #333;
+    border-radius: 4px;
+    background: #F0FFF0;
+    padding: 3px;
+    color: green;
+    font-size: 16px;
+    cursor: pointer;
+    display: inline-block;
+}
+
+.reference:checked ~ .story {
+    display: block;
+    background: #FAFAFA;
+    padding: 41px;
+    height: 485px;
+    width: 950px;
+    margin-left: -316px;
+    border-radius: 5%;
+}
+
+.spravca {
+    position: relative;
+    height: 600px;
+    width: 350px;
+    left: 802px;
+    top: 150px;
+}
+
+.story {
+  margin-top: 82px;
+}
+
+.name_sym {
+margin-left: 24px;
+}
+
+
+
+
+
+/* left */
+
+.reference_left {
+    display: none;
+}
+
+.reference_left ~ .story_left {
+    display: none;
+}
+
+.reference_left + .hd-2 {
+    position: absolute;
+    top: 330px;
+    left: 34%;
+    border: 1px solid #333;
+    border-radius: 4px;
+    background: #F0FFF0;
+    padding: 3px;
+    color: green;
+    font-size: 16px;
+    cursor: pointer;
+    display: inline-block;
+}
+
+.reference_left:checked ~ .story_left {
+    display: block;
+    background: #FAFAFA;
+    padding: 41px;
+    height: 485px;
+    width: 950px;
+    margin-left: -116px;
+    border-radius: 5%;
+}
+
+.spravca_left {
+    position: relative;
+    height: 600px;
+    width: 350px;
+    left: 402px;
+    top: -470px;
+}
+
+.story_left {
+  margin-top: 82px;
+}
+
+.name_sym_left {
+margin-left: 24px;
+}
+
+
+
+
+/* right */
+.reference_right {
+    display: none;
+}
+
+.reference_right ~ .story_right {
+    display: none;
+}
+
+.reference_right + .hd-3 {
+    position: absolute;
+    top: 330px;
+    left: 34%;
+    border: 1px solid #333;
+    border-radius: 4px;
+    background: #F0FFF0;
+    padding: 3px;
+    color: green;
+    font-size: 16px;
+    cursor: pointer;
+    display: inline-block;
+}
+
+.reference_right:checked ~ .story_right {
+    display: block;
+    background: #FAFAFA;
+    padding: 41px;
+    height: 485px;
+    width: 950px;
+    margin-left: -316px;
+    border-radius: 5%;
+}
+
+
+.spravca_right {
+  position: relative;
+  height: 600px;
+  width: 350px;
+  left: 1202px;
+  top: -1093px;
+}
+
+.story_right {
+  margin-top: 82px;
+}
+
+.name_sym_right {
+margin-left: 24px;
+}
